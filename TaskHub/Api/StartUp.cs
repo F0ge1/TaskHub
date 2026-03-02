@@ -1,3 +1,4 @@
+using Api.Middlewares;
 using Api.UseCases.Users;
 using Api.UseCases.Users.Interfaces;
 using Dal;
@@ -78,6 +79,12 @@ public sealed class Startup
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "TaskHub API v1");
             });
         }
+
+
+        app.UseMiddleware<ResponseTimeMiddleware>();
+        app.UseMiddleware<StudentDataMiddleware>("Murzin Kirill Andreevich", "RI-240931");
+        
+
 
         app.UseRouting();
 
