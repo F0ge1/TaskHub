@@ -1,4 +1,5 @@
 using LoggingLibrary;
+using Api.Services;
 
 namespace Api;
 
@@ -17,6 +18,11 @@ public sealed class Program
             .ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder.UseStartup<Startup>();
+            })
+            .ConfigureServices((context, services) =>
+            {
+                // Добавляем фоновый сервис для демонстрации DI
+                services.AddHostedService<DiDemoService>();
             })
             .Build()
             .Run();
