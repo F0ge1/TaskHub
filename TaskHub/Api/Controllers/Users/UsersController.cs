@@ -1,3 +1,4 @@
+using Api.Attributes;
 using Api.Controllers.Users.Request;
 using Api.Controllers.Users.Response;
 using Api.UseCases.Users.Interfaces;
@@ -10,6 +11,8 @@ namespace Api.Controllers.Users;
 /// </summary>
 [ApiController]
 [Route("users")]
+[StudentInfoHeaders("Murzin Kirill Andreevich", "RI-240931")]
+[ResponseTimeHeader]
 public sealed class UsersController : ControllerBase
 {
     /// <summary>
@@ -29,6 +32,7 @@ public sealed class UsersController : ControllerBase
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>Созданный пользователь</returns>
     [HttpPost]
+    [ValidateUserRequest]
     public async Task<ActionResult<UserResponse>> CreateUserAsync(
         [FromBody] CreateUserRequest? request,
         CancellationToken cancellationToken)
@@ -76,6 +80,7 @@ public sealed class UsersController : ControllerBase
     /// <param name="cancellationToken">Токен отмены</param>
     /// <returns>204 при успехе или 400 при неверном запросе</returns>
     [HttpPut("{id:guid}/name")]
+    [ValidateUserRequest]
     public async Task<IActionResult> SetUserNameAsync(
         [FromRoute] Guid id,
         [FromBody] SetUserNameRequest? request,
