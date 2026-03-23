@@ -55,14 +55,14 @@ public sealed class Startup
 
         services.AddEndpointsApiExplorer();
 
-        services.AddSingleton<ISingletonService1, SingletonService1>();
-        services.AddSingleton<ISingletonService2, SingletonService2>();
+        //services.AddSingleton<ISingletonService1, SingletonService1>();
+        //services.AddSingleton<ISingletonService2, SingletonService2>();
 
-        services.AddScoped<IScopedService1, ScopedService1>();
-        services.AddScoped<IScopedService2, ScopedService2>();
+        //services.AddScoped<IScopedService1, ScopedService1>();
+        //services.AddScoped<IScopedService2, ScopedService2>();
 
-        services.AddTransient<ITransientService1, TransientService1>();
-        services.AddTransient<ITransientService2, TransientService2>();
+        //services.AddTransient<ITransientService1, TransientService1>();
+        //services.AddTransient<ITransientService2, TransientService2>();
 
         services.AddSwaggerGen(options =>
         {
@@ -91,8 +91,8 @@ public sealed class Startup
         }
 
 
-        app.UseMiddleware<ResponseTimeMiddleware>();
-        app.UseMiddleware<StudentDataMiddleware>("Murzin Kirill Andreevich", "RI-240931");
+        //app.UseMiddleware<ResponseTimeMiddleware>();
+        //app.UseMiddleware<StudentDataMiddleware>("Murzin Kirill Andreevich", "RI-240931");
         
 
 
