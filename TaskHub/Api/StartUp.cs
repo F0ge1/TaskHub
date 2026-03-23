@@ -1,9 +1,15 @@
 using Api.Middlewares;
 using Api.Services;
+using Api.UseCases.Tasks;
+using Api.UseCases.Tasks.Interfaces;
 using Api.UseCases.Users;
 using Api.UseCases.Users.Interfaces;
 using Dal;
+using Dal.Context;
+using Dal.Repositories;
+using Dal.Repositories.Interfaces;
 using Logic;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
 namespace Api;
@@ -38,9 +44,22 @@ public sealed class Startup
         services.AddControllers();
         services.AddDal();
         services.AddLogic();
-        
+
         services.AddScoped<IManageUserUseCase, ManageUserUseCase>();
-        
+
+        // Репозиторий
+        services.AddScoped<ITaskRepository, TaskRepository>();
+
+        // Usecase
+        services.AddScoped<ICreateTaskUseCase, CreateTaskUseCase>();
+        services.AddScoped<IGetTasksUseCase, GetTasksUseCase>();
+        services.AddScoped<IGetTaskUseCase, GetTaskUseCase>();
+        services.AddScoped<ISetTaskTitleUseCase, SetTaskTitleUseCase>();
+        services.AddScoped<IDeleteTaskUseCase, DeleteTaskUseCase>();
+        services.AddScoped<IDeleteTasksUseCase, DeleteTasksUseCase>();
+
+        services.AddScoped<ITaskService, TaskService>();
+
         services.AddCors(options =>
         {
             options.AddDefaultPolicy(builder =>
@@ -55,14 +74,6 @@ public sealed class Startup
 
         services.AddEndpointsApiExplorer();
 
-        //services.AddSingleton<ISingletonService1, SingletonService1>();
-        //services.AddSingleton<ISingletonService2, SingletonService2>();
-
-        //services.AddScoped<IScopedService1, ScopedService1>();
-        //services.AddScoped<IScopedService2, ScopedService2>();
-
-        //services.AddTransient<ITransientService1, TransientService1>();
-        //services.AddTransient<ITransientService2, TransientService2>();
 
         services.AddSwaggerGen(options =>
         {

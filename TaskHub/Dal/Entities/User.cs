@@ -1,8 +1,10 @@
 namespace Dal.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
 
 /// <summary>
 /// Пользователь
 /// </summary>
+[Table("users")]
 public sealed class User
 {
     /// <summary>
