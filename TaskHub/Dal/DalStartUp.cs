@@ -19,5 +19,8 @@ public static class DalStartUp
     {
         services.AddDatabase<UserDbContext>();
         services.AddScoped<IUserRepository, UserRepository>();
+
+        services.AddDatabase<TaskDbContext>();
+        services.AddScoped<ITaskRepository, TaskRepository>();
     }
 }
