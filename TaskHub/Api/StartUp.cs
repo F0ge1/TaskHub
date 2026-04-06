@@ -1,3 +1,4 @@
+using Api.Filters;
 using Api.Middlewares;
 using Api.Services;
 using Api.UseCases.Tasks;
@@ -41,7 +42,13 @@ public sealed class Startup
     /// <param name="services">Коллекция сервисов</param>
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddControllers();
+        services.AddControllers(options =>
+        {
+            options.SuppressAsyncSuffixInActionNames = false;
+        }).ConfigureApiBehaviorOptions(options =>
+        {
+            options.SuppressModelStateInvalidFilter = true; // Отключаем автоматическую валидацию
+        });
         services.AddDal();
         services.AddLogic();
 
@@ -57,6 +64,11 @@ public sealed class Startup
         services.AddScoped<ISetTaskTitleUseCase, SetTaskTitleUseCase>();
         services.AddScoped<IDeleteTaskUseCase, DeleteTaskUseCase>();
         services.AddScoped<IDeleteTasksUseCase, DeleteTasksUseCase>();
+
+        // Фильтры
+        services.AddScoped<RequestLoggingFilter>();
+        services.AddScoped<ValidateCreateTaskRequestFilter>();
+        services.AddScoped<ValidateSetTaskTitleRequestFilter>();
 
         services.AddScoped<ITaskService, TaskService>();
 
