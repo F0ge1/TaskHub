@@ -1,4 +1,5 @@
-﻿using Api.Controllers.Tasks.Request;
+﻿using Api.Attributes;
+using Api.Controllers.Tasks.Request;
 using Api.Controllers.Tasks.Response;
 using Api.Filters;
 using Api.Services;
@@ -65,11 +66,13 @@ public sealed class TasksController : ControllerBase
     /// <summary>
     /// Получить задачу по идентификатору
     /// </summary>
-    [HttpGet("{id:guid}")]
+    [HttpGet("{id}")]
+    [FromRouteTaskId]
     public async Task<ActionResult<TaskResponse>> GetTaskByIdAsync(
-        [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
+        var id = (Guid)HttpContext.Items["TaskId"]!;
+
         var task = await _taskService.GetTaskByIdAsync(id, cancellationToken);
 
         if (task is null)
@@ -83,13 +86,15 @@ public sealed class TasksController : ControllerBase
     /// <summary>
     /// Изменить название задачи
     /// </summary>
-    [HttpPut("{id:guid}/title")]
+    [HttpPut("{id}/title")]
+    [FromRouteTaskId]
     [ServiceFilter(typeof(ValidateSetTaskTitleRequestFilter))]
     public async Task<IActionResult> SetTaskTitleAsync(
-        [FromRoute] Guid id,
         [FromBody] SetTaskTitleRequest request,
         CancellationToken cancellationToken)
     {
+        var id = (Guid)HttpContext.Items["TaskId"]!;
+
         await _taskService.SetTaskTitleAsync(id, request.Title!, cancellationToken);
         return NoContent();
     }
@@ -97,11 +102,13 @@ public sealed class TasksController : ControllerBase
     /// <summary>
     /// Удалить задачу по идентификатору
     /// </summary>
-    [HttpDelete("{id:guid}")]
+    [HttpDelete("{id}")]
+    [FromRouteTaskId]  // Атрибут на уровне метода
     public async Task<IActionResult> DeleteTaskByIdAsync(
-        [FromRoute] Guid id,
         CancellationToken cancellationToken)
     {
+        var id = (Guid)HttpContext.Items["TaskId"]!;
+
         var deleted = await _taskService.DeleteTaskByIdAsync(id, cancellationToken);
         if (deleted == false)
         {
